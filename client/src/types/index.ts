@@ -80,7 +80,7 @@ export type BoardProps = {
 };
 
 export interface TaskColumnProps {
-  status: string;
+  status: keyof typeof Status;
   tasks: Task[];
   moveTask: (taskId: number, toStatus: string) => void;
   setIsModalNewTaskOpen: (isOpen: boolean) => void;
