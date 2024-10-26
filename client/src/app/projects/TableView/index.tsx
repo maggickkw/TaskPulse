@@ -81,7 +81,10 @@ const Table = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
   return (
     <div className="h-[540px] w-full px-4 pb-8 xl:px-6">
       <div className="pt-5">
-        <Header name="Table" isSmallText />
+        <Header name="Table" buttonComponent={
+              <button className='flex items-center bg-blue-primary rounded px-3 py-2 hover:bg-blue-600' onClick={() => setIsModalNewTaskOpen(true)} >
+                Add Task
+              </button> } isSmallText />
       </div>
       <DataGrid rows={tasks || []} columns={columns} className={dataGridClassNames} sx={dataGridSxStyles(isDarkMode)} />
     </div>
