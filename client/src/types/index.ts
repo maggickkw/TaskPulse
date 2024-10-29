@@ -34,6 +34,7 @@ export enum Status {
 export interface User {
   userId?: number;
   username: string;
+  email: string;
   profilePictureUrl?: string;
   cognitoId?: string;
   teamId?: number;
@@ -84,4 +85,11 @@ export interface TaskColumnProps {
   tasks: Task[];
   moveTask: (taskId: number, toStatus: string) => void;
   setIsModalNewTaskOpen: (isOpen: boolean) => void;
+}
+
+
+export interface SearchResults {
+  tasks?: Task[];
+  projects?: Project[];
+  users?: User[];
 }

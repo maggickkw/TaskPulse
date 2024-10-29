@@ -15,30 +15,30 @@ const prisma = new client_1.PrismaClient();
 const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { query } = req.query;
     try {
-        const tasks = prisma.task.findMany({
+        const tasks = yield prisma.task.findMany({
             where: {
                 OR: [
                     { title: { contains: query } },
-                    { description: { contains: query } }
-                ]
-            }
+                    { description: { contains: query } },
+                ],
+            },
         });
-        const projects = prisma.project.findMany({
+        const projects = yield prisma.project.findMany({
             where: {
                 OR: [
                     { name: { contains: query } },
-                    { description: { contains: query } }
-                ]
-            }
+                    { description: { contains: query } },
+                ],
+            },
         });
-        const users = prisma.user.findMany({
+        const users = yield prisma.user.findMany({
             where: {
                 OR: [
-                    { username: { contains: query } },
-                ]
-            }
+                    { username: { contains: query } }
+                ],
+            },
         });
-        res.json({ tasks, projects });
+        res.json({ tasks, projects, users });
     }
     catch (error) {
         res
