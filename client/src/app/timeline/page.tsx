@@ -12,7 +12,6 @@ type TaskTypeItems = "task" | "milestone" | "project";
 
 const Timeline = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
-  console.log(isDarkMode)
   const { data: projects, isError, isLoading } = useGetProjectsQuery();
 
   const [displayOptions, setDisplayOptions] = useState<DisplayOption>({
