@@ -43,7 +43,7 @@ const Users = () => {
   }
 
   if (isError || !users) {
-    return <div>An error occured while fetching tasks</div>;
+    return <div>An error occured while fetching users</div>;
   }
 
   return (
