@@ -3,14 +3,13 @@
 import { useAppSelector } from "@/app/redux";
 import Header from "@/components/Header";
 import { useGetProjectsQuery } from "@/state/api";
-import { BoardProps } from "@/types";
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import React, { useMemo, useState } from "react";
 
 type TaskTypeItems = "task" | "milestone" | "project";
 
-const Timeline = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
+const Timeline = () => {
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
   const { data: projects, isError, isLoading } = useGetProjectsQuery();
 
