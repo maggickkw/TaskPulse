@@ -7,10 +7,10 @@ import React, { useState } from "react";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  id: string;
+  id?: string | null;
 };
 
-const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
+const ModalNewTask = ({ isOpen, onClose, id = null }: Props) => {
   const [createTask, {isLoading}] = useCreateTaskMutation();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -21,10 +21,10 @@ const ModalNewTask = ({ isOpen, onClose, id }: Props) => {
   const [dueDate, setDueDate] = useState("");
   const [authorUserId, setAuthorUserId] = useState("");
   const [assignedUserId, setAssignedUserId] = useState("");
-
+  const [projectId, setProjectId] = useState("")
 
   const handleSubmit = async () => {
-    if (!title || !authorUserId) return;
+    if (!title || !authorUserId || !(id !== null || projectId)) return;
 
 const formattedStartDate = formatISO(new Date(startDate), { representation: 'complete'})
 const formattedDueDate = formatISO(new Date(dueDate), { representation: 'complete'})
@@ -39,12 +39,12 @@ const formattedDueDate = formatISO(new Date(dueDate), { representation: 'complet
       dueDate: formattedDueDate,
       authorUserId: parseInt(authorUserId),
       assignedUserId: parseInt(assignedUserId),
-      projectId: Number(id)
+      projectId: id !== null ? Number(id) : Number(projectId)
     });
   };
 
   const isFormValid = () => {
-    return title && authorUserId;
+    return title && authorUserId && !(id !== null || projectId)
   };
 
 
@@ -125,13 +125,23 @@ const formattedDueDate = formatISO(new Date(dueDate), { representation: 'complet
           placeholder="Author User ID"
           value={authorUserId}
           onChange={(e) => setAuthorUserId(e.target.value)}
-        /><input
+        />
+        <input
         type="text"
         className={inputStyles}
         placeholder="Assigned User ID"
         value={assignedUserId}
         onChange={(e) => setAssignedUserId(e.target.value)}
       />
+      {id === null && (
+        <input
+        type="text"
+        className={inputStyles}
+        placeholder="ProjectId"
+        value={assignedUserId}
+        onChange={(e) => setProjectId(e.target.value)}
+      />
+      )}
         <button type="submit" className={`mt-4 flex w-full justify-center rounded-md dorder-transparent bg-blue-primary px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-b focus:ring-blue-600 focus:offset-2 ${!isFormValid() || isLoading ? "cursor-not-allowed opacity-50" : ""}`} disabled={!isFormValid() || isLoading}>
         {isLoading ? "Creating" : "Create Task"}
         </button>
