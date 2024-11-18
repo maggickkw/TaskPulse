@@ -9,6 +9,7 @@ import taskRoutes from './routes/taskRoutes';
 import searchRoutes from './routes/searchRoutes';
 import userRoutes from './routes/userRoutes';
 import teamRoutes from './routes/teamRoutes';
+import authRoutes from './routes/authRoutes';
 
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/tasks', taskRoutes)
 app.use('/search', searchRoutes)
 app.use('/users', userRoutes)
 app.use('/teams', teamRoutes)
+app.use('/auth', authRoutes)
 
 const port = Number(process.env.PORT) || 3000
 app.listen(port, "0.0.0.0", () => {

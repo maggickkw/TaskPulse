@@ -34,9 +34,9 @@ export enum Status {
 export interface User {
   userId?: number;
   username: string;
-  email: string;
+  email?: string;
   profilePictureUrl?: string;
-  cognitoId?: string;
+  password?: string
   teamId?: number;
 }
 
@@ -100,3 +100,19 @@ export interface Team {
   productOwnerUserId?: number
   projectManagerUserId?: number
 }
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+  message?: string;
+  status?: number;
+}
+
+export type AuthContextType = {
+  isAuthenticated: boolean;
+  user: User | null;
+  login: (username: string, password: string) => Promise<void>;
+  signup: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+};
+
