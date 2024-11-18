@@ -1,4 +1,11 @@
-import { Project, SearchResults, Task, Team, User } from "@/types";
+import {
+  AuthResponse,
+  Project,
+  SearchResults,
+  Task,
+  Team,
+  User,
+} from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
@@ -28,7 +35,9 @@ export const api = createApi({
     getTaskByUser: build.query<Task[], number>({
       query: (userId) => `tasks/user/${userId}`,
       providesTags: (result, error, userId) =>
-        result ? result.map(({ id }) => ({type: "Tasks", id})) : [{type: "Tasks", id: userId}]
+        result
+          ? result.map(({ id }) => ({ type: "Tasks", id }))
+          : [{ type: "Tasks", id: userId }],
     }),
 
     createTask: build.mutation<Task, Partial<Task>>({
@@ -55,10 +64,54 @@ export const api = createApi({
     }),
     getTeams: build.query<Team[], void>({
       query: () => "teams",
-      providesTags: ["Teams"]
+      providesTags: ["Teams"],
     }),
     search: build.query<SearchResults, string>({
       query: (query) => `search?query=${query}`,
+    }),
+    // createUser: build.mutation<AuthResponse, {username: string, password: string, profilePicture: string}>({
+    //   query: (user) => ({
+    //     url: "auth/register",
+    //     method: "POST",
+    //     body: user
+    //   }),
+    //   invalidatesTags: ["Users"]
+    // }),
+    createUser: build.mutation<AuthResponse,FormData>({
+      query: (formData) => ({
+        url: "auth/register",
+        method: "POST",
+        // Don't set Content-Type header - it will be automatically set for FormData
+        // with the correct boundary
+        body: formData,
+        // Prevent fetchBaseQuery from automatically serializing the FormData to JSON
+        formData: true,
+      }),
+      invalidatesTags: ["Users"],
+      // Transform the response to handle any additional processing
+      transformResponse: (response: AuthResponse) => {
+        console.log("User creation response:", {
+          success: !!response.token,
+          hasProfilePicture: !!response.profilePictureUrl,
+        });
+        return response;
+      },
+
+      transformErrorResponse: (response: { status: number; data: unknown }) => {
+        console.error("User creation failed:", response);
+        return {
+          status: response.status,
+          message: response.data?.message || "Registration failed",
+        };
+      },
+    }),
+
+    loginUser: build.mutation<AuthResponse,{ username: string; password: string }>({
+      query: (credentials) => ({
+        url: "auth/login",
+        method: "POST",
+        body: credentials,
+      }),
     }),
   }),
 });
@@ -72,5 +125,7 @@ export const {
   useSearchQuery,
   useGetUsersQuery,
   useGetTeamsQuery,
-  useGetTaskByUserQuery
+  useGetTaskByUserQuery,
+  useCreateUserMutation,
+  useLoginUserMutation,
 } = api;

@@ -1,13 +1,20 @@
+'use client'
+
 import Header from '@/components/Header';
 import React from 'react'
+import { useAuth } from '../AuthContext';
 
 const Settings = () => {
-    const userSettings = {
-        username: "maggick",
-        email: "test@test.com",
-        teamName: "Development Team",
-        roleName: "Developer"
-    }
+    // const userSettings = {
+    //     username: "maggick",
+    //     email: "test@test.com",
+    //     teamName: "Development Team",
+    //     roleName: "Developer"
+    // }
+
+    const {user} = useAuth()
+
+    // console.log(user)
 
     const labelStyles = "block text-sm font-medium dark:text-white";
     const textStyles = "mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 dark:text-white"
@@ -18,20 +25,20 @@ const Settings = () => {
         <div className='space-y-4 flex-col items-center justify-center w-72'>
             <div>
             <label className={labelStyles}>Username</label>
-            <div className={textStyles}>{userSettings.username}</div>
+            <div className={textStyles}>{user?.username}</div>
             </div>
             <div>
             <label className={labelStyles}>Email</label>
-            <div className={textStyles}>{userSettings.email}</div>
+            <div className={textStyles}>{user?.email}</div>
             </div>
-            <div>
+            {/* <div>
             <label className={labelStyles}>Team</label>
-            <div className={textStyles}>{userSettings.teamName}</div>
-            </div>
-            <div>
+            <div className={textStyles}>{user?.teamName}</div>
+            </div> */}
+            {/* <div>
             <label className={labelStyles}>Role</label>
             <div className={textStyles}>{userSettings.roleName}</div>
-            </div>
+            </div> */}
         </div>
     </div>
   )

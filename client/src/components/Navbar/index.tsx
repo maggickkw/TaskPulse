@@ -3,6 +3,7 @@ import { Menu, Moon, Search, Settings, Sun } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsDarkMode, setIsSidebarCollapsed } from "@/state";
+import { useAuth } from "@/app/AuthContext";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ const Navbar = () => {
     (state) => state.global.isSidebarCollapsed,
   );
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+  const {user} = useAuth()
   return (
     <div className="flex items-center justify-between bg-white px-4 py-3 dark:bg-black">
       <div className="flex items-center gap-8">
@@ -30,6 +32,13 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center">
+          {user?.profilePictureUrl && (
+          <img
+            src={user.profilePictureUrl}
+            alt="Profile"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        )}
         <button
           onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
           className={
@@ -38,6 +47,7 @@ const Navbar = () => {
               : `rounded p-2 hover:bg-gray-100`
           }
         >
+
           {isDarkMode ? (
             <Sun className="h-6 w-6 cursor-pointer dark:text-white" />
           ): (
@@ -54,6 +64,7 @@ const Navbar = () => {
         >
           <Settings className="h-6-w-6 cursor-pointer dark:text-white" />
         </Link>
+
         <div className="ml-2 mr-5 hidden min-h-[2em] w-[0.1em] bg-gray-200 md:inline-block"></div>
       </div>
     </div>
