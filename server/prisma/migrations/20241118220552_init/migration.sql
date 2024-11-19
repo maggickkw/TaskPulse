@@ -1,10 +1,10 @@
 -- CreateTable
 CREATE TABLE "User" (
     "userId" SERIAL NOT NULL,
-    "cognitoId" TEXT NOT NULL,
     "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "profilePictureUrl" TEXT,
-    "teamId" INTEGER NOT NULL,
+    "teamId" INTEGER,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
 );
@@ -69,7 +69,7 @@ CREATE TABLE "TaskAssignment" (
 -- CreateTable
 CREATE TABLE "Attachment" (
     "id" SERIAL NOT NULL,
-    "fileURl" TEXT NOT NULL,
+    "fileURL" TEXT NOT NULL,
     "fileName" TEXT,
     "taskId" INTEGER NOT NULL,
     "uploadedById" INTEGER NOT NULL,
@@ -88,13 +88,10 @@ CREATE TABLE "Comment" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_cognitoId_key" ON "User"("cognitoId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProjectTeam" ADD CONSTRAINT "ProjectTeam_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
